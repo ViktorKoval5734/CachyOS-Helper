@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Сохраняем терминал на fd 3 при запуске через pipe (curl | bash)
-if [ ! -t 0 ]; then
-    if [ -e /dev/tty ]; then
-        exec 3< /dev/tty
-    fi
-fi
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -493,63 +486,20 @@ show_menu() {
 
         echo ""
 
-        # Читаем клавишу из fd 3 (открыт на /dev/tty)
-        if [ -e /dev/tty ] && [ -e /proc/self/fd/3 ]; then
-            read -n1 -s key <&3
-        else
+        # Читаем из терминала (работает и при запуске через pipe)
+        if [ -e /dev/tty ]; then
             read -n1 -s key < /dev/tty 2>/dev/null || read -n1 -s key
+        else
+            read -n1 -s key
         fi
 
         case "$key" in
-            
-            "")
-                # Enter
-                idx=$SELECTED_INDEX
-                if [ "${LIST_TYPE[$idx]}" = "cat" ]; then
-                    cat_num=${LIST_CAT[$idx]}
-                    if [ "${CATEGORY_OPEN[$cat_num]}" = true ]; then
-                        CATEGORY_OPEN[$cat_num]=false
-                    else
-                        CATEGORY_OPEN[$cat_num]=true
-                    fi
-                else
-                    cat_num=${LIST_CAT[$idx]}
-                    item_num=${LIST_ITEM[$idx]}
-
-                    if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
-                        if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
-                        if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages
-                    elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; fi
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; fi
-                    fi
-                fi
-                ;;
-            q|Q) clear; exit 0 ;;
-        esac
-    done
-}
-
-check_packages
-show_menu
-\x1b')
+            $'\x1b')
                 # Стрелки
-                if [ -e /dev/tty ] && [ -e /proc/self/fd/3 ]; then
-                    read -n2 -s rest <&3
-                else
+                if [ -e /dev/tty ]; then
                     read -n2 -s rest < /dev/tty 2>/dev/null || read -n2 -s rest
+                else
+                    read -n2 -s rest
                 fi
                 if [ "$rest" = "[A" ]; then
                     if [ $SELECTED_INDEX -gt 0 ]; then SELECTED_INDEX=$((SELECTED_INDEX - 1)); fi
@@ -573,132 +523,22 @@ show_menu
 
                     if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
                         if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay
+                            replace_paru_with_yay; exec "$0"
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
                         if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages
+                            install_gaming_packages; exec "$0"
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages
+                        force_update_packages; exec "$0"
                     elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda
+                        install_update_koda; exec "$0"
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader
+                        install_decky_loader; exec "$0"
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; fi
+                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; exec "$0"; fi
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; fi
-                    fi
-                fi
-                ;;
-            q|Q) clear; exit 0 ;;
-        esac
-    done
-}
-
-check_packages
-show_menu
-\x1b')
-                # Стрелки
-                if [ -e /dev/tty ] && [ -e /proc/self/fd/3 ]; then
-                    read -n2 -s rest <&3
-                else
-                    read -n2 -s rest < /dev/tty 2>/dev/null || read -n2 -s rest
-                fi
-                if [ "$rest" = "[A" ]; then
-                    if [ $SELECTED_INDEX -gt 0 ]; then SELECTED_INDEX=$((SELECTED_INDEX - 1)); fi
-                elif [ "$rest" = "[B" ]; then
-                    if [ $SELECTED_INDEX -lt $((total - 1)) ]; then SELECTED_INDEX=$((SELECTED_INDEX + 1)); fi
-                fi
-                ;;
-            "")
-                # Enter
-                idx=$SELECTED_INDEX
-                if [ "${LIST_TYPE[$idx]}" = "cat" ]; then
-                    cat_num=${LIST_CAT[$idx]}
-                    if [ "${CATEGORY_OPEN[$cat_num]}" = true ]; then
-                        CATEGORY_OPEN[$cat_num]=false
-                    else
-                        CATEGORY_OPEN[$cat_num]=true
-                    fi
-                else
-                    cat_num=${LIST_CAT[$idx]}
-                    item_num=${LIST_ITEM[$idx]}
-
-                    if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
-                        if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
-                        if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages
-                    elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; fi
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; fi
-                    fi
-                fi
-                ;;
-            q|Q) clear; exit 0 ;;
-        esac
-    done
-}
-
-check_packages
-show_menu
-\x1b')
-                # Стрелки
-                if [ -e /dev/tty ] && [ -e /proc/self/fd/3 ]; then
-                    read -n2 -s rest <&3
-                else
-                    read -n2 -s rest < /dev/tty 2>/dev/null || read -n2 -s rest
-                fi
-                if [ "$rest" = "[A" ]; then
-                    if [ $SELECTED_INDEX -gt 0 ]; then SELECTED_INDEX=$((SELECTED_INDEX - 1)); fi
-                elif [ "$rest" = "[B" ]; then
-                    if [ $SELECTED_INDEX -lt $((total - 1)) ]; then SELECTED_INDEX=$((SELECTED_INDEX + 1)); fi
-                fi
-                ;;
-            "")
-                # Enter
-                idx=$SELECTED_INDEX
-                if [ "${LIST_TYPE[$idx]}" = "cat" ]; then
-                    cat_num=${LIST_CAT[$idx]}
-                    if [ "${CATEGORY_OPEN[$cat_num]}" = true ]; then
-                        CATEGORY_OPEN[$cat_num]=false
-                    else
-                        CATEGORY_OPEN[$cat_num]=true
-                    fi
-                else
-                    cat_num=${LIST_CAT[$idx]}
-                    item_num=${LIST_ITEM[$idx]}
-
-                    if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
-                        if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
-                        if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages
-                        fi
-                    elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages
-                    elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; fi
-                    elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; fi
+                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; exec "$0"; fi
                     fi
                 fi
                 ;;
