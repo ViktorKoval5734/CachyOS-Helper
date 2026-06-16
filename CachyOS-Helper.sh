@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Перенаправляем дескрипторы на терминал при запуске через pipe (curl | bash)
+if [ ! -t 0 ]; then
+    exec </dev/tty >/dev/tty 2>/dev/tty
+fi
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
