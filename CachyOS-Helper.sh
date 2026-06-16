@@ -48,14 +48,14 @@ replace_paru_with_yay() {
     check_packages
     if [ "$yay_installed" = true ] && [ "$paru_installed" = false ]; then
         echo -e "${YELLOW}yay уже установлен.${NC}"
-        read -p "Нажмите Enter..."
+        read -p "Нажмите Enter..." < /dev/tty
         return
     fi
     request_sudo || return
     if [ "$paru_installed" = true ]; then pkexec pacman -Rns paru --noconfirm; fi
     if [ "$yay_installed" = false ]; then pkexec pacman -S yay --noconfirm; fi
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 install_update_koda() {
@@ -66,7 +66,7 @@ install_update_koda() {
     fi
     curl -L koda-esbd.onrender.com/Launch-koda.sh | bash
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 install_decky_loader() {
@@ -76,7 +76,7 @@ install_decky_loader() {
     bash /tmp/user_install_script.sh
     rm -f /tmp/user_install_script.sh
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 install_gaming_packages() {
@@ -95,7 +95,7 @@ install_gaming_packages() {
     if [ -n "$pacman_packages" ]; then pkexec pacman -S $pacman_packages --noconfirm; fi
     if [ -n "$yay_packages" ]; then pkexec yay -S $yay_packages --noconfirm; fi
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 show_progress() {
@@ -106,13 +106,11 @@ show_progress() {
     local filled=$((percent * width / 100))
     local empty=$((width - filled))
     
-    # Генерируем строку заполненной части (█)
     local filled_bar=""
     for ((i=0; i<filled; i++)); do
         filled_bar+="█"
     done
     
-    # Генерируем строку пустой части (░)
     local empty_bar=""
     for ((i=0; i<empty; i++)); do
         empty_bar+="░"
@@ -120,7 +118,6 @@ show_progress() {
     
     local bar="${filled_bar}${empty_bar}"
     
-    # Перемещаем курсор в начало строки и очищаем до конца строки
     printf "\r\033[2K[%s] %3d%% %s" "$bar" "$percent" "$msg"
 }
 
@@ -128,7 +125,7 @@ install_lossless_scaling() {
     check_packages
     if [ "$decky_loader_installed" = false ]; then
         echo -e "${RED}Требуется Decky Loader!${NC}"
-        read -p "Нажмите Enter..."
+        read -p "Нажмите Enter..." < /dev/tty
         return
     fi
     request_sudo || return
@@ -173,14 +170,14 @@ install_lossless_scaling() {
     show_progress 100 "✅"
     rm -rf "$pt"
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 install_amnesia_plugin() {
     check_packages
     if [ "$decky_loader_installed" = false ]; then
         echo -e "${RED}Требуется Decky Loader!${NC}"
-        read -p "Нажмите Enter..."
+        read -p "Нажмите Enter..." < /dev/tty
         return
     fi
     request_sudo || return
@@ -205,43 +202,31 @@ install_amnesia_plugin() {
     show_progress 100 "✅"
     rm -rf "$td"
     check_packages
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 force_update_packages() {
-    # Сначала запрашиваем пароль sudo, БЕЗ прогресс-бара
     echo -e "${YELLOW}Введите пароль sudo для выполнения обновлений...${NC}"
     if ! sudo -v; then
         echo -e "${RED}Ошибка аутентификации sudo.${NC}"
-        read -p "Нажмите Enter..."
+        read -p "Нажмите Enter..." < /dev/tty
         return
     fi
     echo ""
 
-    # После пароля показываем прогресс-бар
     show_progress 5 "Очистка кэша download..."
-
-    # Шаг 1: Удаление папок download-* из кэша pacman
     sudo rm -rf /var/cache/pacman/pkg/download-*
     show_progress 15 "Очистка pacman -Sc..."
-
-    # Шаг 2: sudo pacman -Sc --noconfirm
     sudo pacman -Sc --noconfirm > /dev/null 2>&1
     show_progress 35 "Очистка yay -Sc..."
-
-    # Шаг 3: yay -Sc --noconfirm
     yay -Sc --noconfirm > /dev/null 2>&1
     show_progress 55 "Обновление зеркал..."
-
-    # Шаг 4: cachyos-rate-mirrors
     cachyos-rate-mirrors > /dev/null 2>&1
     show_progress 75 "Обновление системы..."
-
-    # Шаг 5: sudo pacman -Syu --noconfirm
     sudo pacman -Syu --noconfirm > /dev/null 2>&1
     show_progress 100 "✅ Обновление завершено"
     echo ""
-    read -p "Нажмите Enter..."
+    read -p "Нажмите Enter..." < /dev/tty
 }
 
 show_menu() {
@@ -271,14 +256,13 @@ show_menu() {
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀  H     E     L     P     E     R     ⡇⣿⣿⣿⣿⣿⣿⣿⣿⠋      b y    Ш а л у н ⠀⠀⣠⣾⣿⣿⣿⣿⣿"
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉⠁⠉⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
-        echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+        echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣀⠀⠀⠀⢀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
         echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
         echo -e "${GRAY}Используйте ↑ ↓ для навигации, Enter (или А, при использовании контроллера) для выбора${NC}"
         echo ""
 
-        # Строим список
         declare -a LIST_TYPE=()
         declare -a LIST_CAT=()
         declare -a LIST_ITEM=()
@@ -304,7 +288,6 @@ show_menu() {
 
         total=${#LIST_TYPE[@]}
 
-        # Отображение
         for ((idx=0; idx<total; idx++)); do
             if [ "${LIST_TYPE[$idx]}" = "cat" ]; then
                 cat_num=${LIST_CAT[$idx]}
@@ -389,11 +372,21 @@ show_menu() {
 
         echo ""
 
-        read -n1 -s key
+        # Читаем из терминала (работает и при запуске через pipe)
+        if [ -e /dev/tty ]; then
+            read -n1 -s key < /dev/tty 2>/dev/null || read -n1 -s key
+        else
+            read -n1 -s key
+        fi
 
         case "$key" in
             $'\x1b')
-                read -n2 -s rest
+                # Стрелки
+                if [ -e /dev/tty ]; then
+                    read -n2 -s rest < /dev/tty 2>/dev/null || read -n2 -s rest
+                else
+                    read -n2 -s rest
+                fi
                 if [ "$rest" = "[A" ]; then
                     if [ $SELECTED_INDEX -gt 0 ]; then SELECTED_INDEX=$((SELECTED_INDEX - 1)); fi
                 elif [ "$rest" = "[B" ]; then
@@ -401,6 +394,7 @@ show_menu() {
                 fi
                 ;;
             "")
+                # Enter
                 idx=$SELECTED_INDEX
                 if [ "${LIST_TYPE[$idx]}" = "cat" ]; then
                     cat_num=${LIST_CAT[$idx]}
