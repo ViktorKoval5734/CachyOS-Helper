@@ -2,7 +2,9 @@
 
 # Перенаправляем дескрипторы на терминал при запуске через pipe (curl | bash)
 if [ ! -t 0 ]; then
-    exec </dev/tty >/dev/tty 2>/dev/tty
+    if [ -e /dev/tty ]; then
+        exec </dev/tty >/dev/tty 2>/dev/tty
+    fi
 fi
 
 RED='\033[0;31m'
@@ -528,22 +530,22 @@ show_menu() {
 
                     if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
                         if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay; exec "$0"
+                            replace_paru_with_yay
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
                         if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages; exec "$0"
+                            install_gaming_packages
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages; exec "$0"
+                        force_update_packages
                     elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda; exec "$0"
+                        install_update_koda
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader; exec "$0"
+                        install_decky_loader
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; exec "$0"; fi
+                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; fi
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; exec "$0"; fi
+                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; fi
                     fi
                 fi
                 ;;
