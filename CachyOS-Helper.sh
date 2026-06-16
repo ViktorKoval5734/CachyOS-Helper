@@ -71,10 +71,37 @@ install_update_koda() {
 
 install_decky_loader() {
     echo -e "${YELLOW}Загрузка и установка Decky Loader...${NC}"
+    # Скрываем курсор
+    tput civis
+
     rm -f /tmp/user_install_script.sh
-    curl -S -s -L -O --output-dir /tmp/ --connect-timeout 60 https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/user_install_script.sh
-    bash /tmp/user_install_script.sh
+    curl -S -s -L -O --output-dir /tmp/ --connect-timeout 60 https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/user_install_script.sh >/dev/null 2>&1
+
+    # Очищаем экран и показываем заставку
+    clear
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣾⣿⣿⠟⣛⣭⣭⣭⣭⣭⣭⣭⣭⣭⣭⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⣭⣭⣭⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣛⣭⣭⣭⣭⣭⣭⣭⣭⣭⣛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣾⣿⣿⠿⠿⠿⠿⠿⠿⠿⠿⠿⢸⣿⢛⣛⣛⣛⣛⣛⣛⣛⣛⢛⡛⢿⣿⡿⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⡛⡇⣿⣿⣿⣘⣛⣛⣛⣛⣛⣛⣛⠻⣿⡟⣛⣛⡛⣿⣿⣿⣿⣿⣿⢛⣛⣛⡛⡏⣾⣿⣿⠿⠿⠿⠿⠿⠿⠿⣿⣿⣷⡸⣿⢟⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⡛⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡘⠛⠛⠛⠛⠛⠛⠛⠿⣿⣿⣆⠟⣼⣿⣟⠿⠛⠛⠛⠛⠛⠛⠛⢃⡇⣿⣿⣿⠛⠛⠛⠛⠛⠻⢿⣿⣿⡜⡇⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⡇⡇⣿⣿⡇⣾⣿⣿⣿⣿⣿⣿⢸⣿⣿⡇⡇⣿⣿⡿⠛⠛⠛⠛⠛⠛⠛⠛⢃⣿⣿⣿"
+    echo -e "⣿⣿⣿⠋⠁⠀⠈⠙⢿⣿⣿⣿⡇⣿⣿⡇⢿⣿⣿⣿⣿⣿⣿⣿⣿⠏⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⡇⡇⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⡇⡇⣿⣿⣇⢿⣿⣿⣿⣿⣿⣿⢸⣿⣿⡇⣧⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⢹⣿⣿"
+    echo -e "⣿⣿⡇⠀⠀⠀⠀⠀⢸⣿⣿⣿⣇⢿⣿⣿⣶⣶⣶⣶⣶⣶⣶⣶⣶⢸⡌⣿⣿⣷⣶⣶⣶⣶⣶⣶⣿⣿⠏⣦⢻⣿⣿⣶⣶⣶⣶⣶⣶⣶⣶⡆⡇⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⡇⣇⢿⣿⣿⣶⣶⣶⣶⣶⣶⣾⣿⣿⡇⣧⢻⣿⣿⣷⣶⣶⣶⣶⣶⣶⣿⣿⡿⣱⣿⡇⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⣿⢱⣿⣿"
+    echo -e "⣿⣿⣷⣄⠀⠀⠀⣠⣾⣿⣿⣿⣿⣷⣭⣭⣭⣭⣭⣭⣭⣭⣭⣭⣭⣼⣿⣦⣭⣭⣭⣭⣭⣭⣭⣭⣭⣵⣾⣿⣷⣬⣭⣭⣭⣭⣭⣭⣭⣭⣭⣥⣧⣭⣭⣭⣼⣿⣿⣿⣿⣿⣬⣭⣭⣥⣿⣷⣭⡭⠭⠭⠭⠭⠭⠭⢹⣿⣿⡇⣿⣷⣬⣭⣭⣭⣭⣭⣭⣭⣭⣭⣭⣶⣿⣿⣧⣭⣭⣭⣭⣭⣭⣭⣭⣭⣭⣵⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀  H     E     L     P     E     R     ⡇⣿⣿⣿⣿⣿⣿⣿⣿⠋      b y    Ш а л у н ⠀⠀⣠⣾⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉⠁⠉⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣀⠀⠀⠀⢀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+    echo -e "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+
+    # Запускаем установку в foreground, вывод в файл (скрыт от пользователя)
+    bash /tmp/user_install_script.sh > /tmp/decky_install.log 2>&1
     rm -f /tmp/user_install_script.sh
+
+    # Восстанавливаем курсор, очищаем экран, показываем меню
+    tput cnorm
     check_packages
     read -p "Нажмите Enter..." < /dev/tty
 }
@@ -214,18 +241,105 @@ force_update_packages() {
     fi
     echo ""
 
+    # Сохраняем список установленных пакетов ДО обновления
+    local packages_before
+    packages_before=$(pacman -Qneq 2>/dev/null | sort)
+
+    # Очищаем кэш
+    local cache_cleared=false
+    local cache_lines=()
+
     show_progress 5 "Очистка кэша download..."
-    sudo rm -rf /var/cache/pacman/pkg/download-*
+    if ls /var/cache/pacman/pkg/download-* &>/dev/null; then
+        local dl_count
+        dl_count=$(find /var/cache/pacman/pkg/ -maxdepth 1 -name "download-*" -type d 2>/dev/null | wc -l)
+        if [ "$dl_count" -gt 0 ]; then
+            sudo rm -rf /var/cache/pacman/pkg/download-*
+            cache_cleared=true
+            cache_lines+=("  📁 Удалены папки download: $dl_count шт.")
+        fi
+    fi
     show_progress 15 "Очистка pacman -Sc..."
-    sudo pacman -Sc --noconfirm > /dev/null 2>&1
+    local pacman_sc_output
+    pacman_sc_output=$(sudo pacman -Sc --noconfirm 2>&1)
+    if echo "$pacman_sc_output" | grep -q "удалён\|удалены\|удалено"; then
+        cache_cleared=true
+        local pacman_sc_count
+        pacman_sc_count=$(echo "$pacman_sc_output" | grep -oP '\d+(?= пакет(ов)? удален(ы)?)' | tail -1)
+        if [ -n "$pacman_sc_count" ]; then
+            cache_lines+=("  🗑  pacman -Sc: удалено пакетов в кэше: $pacman_sc_count")
+        else
+            cache_lines+=("  🗑  pacman -Sc: кэш очищен")
+        fi
+    fi
     show_progress 35 "Очистка yay -Sc..."
-    yay -Sc --noconfirm > /dev/null 2>&1
+    local yay_sc_output
+    yay_sc_output=$(yay -Sc --noconfirm 2>&1)
+    if echo "$yay_sc_output" | grep -qE "remove|удал|cache|delete|clear"; then
+        cache_cleared=true
+        local yay_sc_count
+        yay_sc_count=$(echo "$yay_sc_output" | grep -oP '\d+(?= package|package(s)? in cache)' | tail -1)
+        if [ -n "$yay_sc_count" ]; then
+            cache_lines+=("  🗑  yay -Sc: удалено из AUR-кэша: $yay_sc_count")
+        else
+            cache_lines+=("  🗑  yay -Sc: AUR-кэш очищен")
+        fi
+    fi
+
     show_progress 55 "Обновление зеркал..."
     cachyos-rate-mirrors > /dev/null 2>&1
     show_progress 75 "Обновление системы..."
-    sudo pacman -Syu --noconfirm > /dev/null 2>&1
-    show_progress 100 "✅ Обновление завершено"
+    local sync_output
+    sync_output=$(sudo pacman -Syu --noconfirm 2>&1)
+    show_progress 100 "✅"
+
+    # Очищаем строку прогресса
+    printf "\r\033[2K\r"
+
+    # Определяем обновлённые пакеты
+    local packages_after
+    packages_after=$(pacman -Qneq 2>/dev/null | sort)
+    local updated_packages
+    updated_packages=$(comm -23 <(echo "$packages_after") <(echo "$packages_before"))
+
     echo ""
+    echo -e "${GREEN}========================================${NC}"
+    echo -e "${GREEN}  Обновление завершено${NC}"
+    echo -e "${GREEN}========================================${NC}"
+    echo ""
+
+    # Показываем обновлённые пакеты
+    if [ -n "$updated_packages" ]; then
+        local upd_count
+        upd_count=$(echo "$updated_packages" | wc -l)
+        echo -e "${YELLOW}Обновлено пакетов: $upd_count${NC}"
+        while IFS= read -r pkg; do
+            local new_ver
+            new_ver=$(pacman -Qi "$pkg" 2>/dev/null | grep "^Версия" | cut -d':' -f2 | xargs)
+            if [ -n "$new_ver" ]; then
+                echo -e "  📦 $pkg - $new_ver"
+            else
+                echo -e "  📦 $pkg"
+            fi
+        done <<< "$updated_packages"
+    else
+        echo -e "${GRAY}Пакеты не обновлены (система уже актуальна)${NC}"
+    fi
+
+    echo ""
+
+    # Показываем информацию об очистке кэша
+    if [ "$cache_cleared" = true ]; then
+        echo -e "${YELLOW}Очистка кэша:${NC}"
+        for line in "${cache_lines[@]}"; do
+            echo "$line"
+        done
+    else
+        echo -e "${GRAY}Очистка кэша: не требовалась (пусто)${NC}"
+    fi
+
+    echo ""
+    echo -e "${GREEN}========================================${NC}"
     read -p "Нажмите Enter..." < /dev/tty
 }
 
@@ -409,22 +523,22 @@ show_menu() {
 
                     if [ $cat_num -eq 0 ] && [ $item_num -eq 0 ]; then
                         if [ "$yay_installed" = false ] || [ "$paru_installed" = true ]; then
-                            replace_paru_with_yay; check_packages
+                            replace_paru_with_yay; exec "$0"
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 1 ]; then
                         if [ "$cachyos_gaming_installed" = false ] || [ "$protonup_qt_installed" = false ] || [ "$qbittorrent_installed" = false ] || [ "$portproton_installed" = false ]; then
-                            install_gaming_packages; check_packages
+                            install_gaming_packages; exec "$0"
                         fi
                     elif [ $cat_num -eq 0 ] && [ $item_num -eq 2 ]; then
-                        force_update_packages; check_packages
+                        force_update_packages; exec "$0"
                     elif [ $cat_num -eq 1 ] && [ $item_num -eq 0 ]; then
-                        install_update_koda; check_packages
+                        install_update_koda; exec "$0"
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 0 ]; then
-                        install_decky_loader; check_packages
+                        install_decky_loader; exec "$0"
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 1 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; check_packages; fi
+                        if [ "$decky_loader_installed" = true ]; then install_lossless_scaling; exec "$0"; fi
                     elif [ $cat_num -eq 2 ] && [ $item_num -eq 2 ]; then
-                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; check_packages; fi
+                        if [ "$decky_loader_installed" = true ]; then install_amnesia_plugin; exec "$0"; fi
                     fi
                 fi
                 ;;
